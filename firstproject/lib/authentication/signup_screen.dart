@@ -11,15 +11,12 @@ import '../widgets/loading_dialog.dart';
 import 'login_screen.dart';
 
 
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
-
-
 
 class _SignUpScreenState extends State<SignUpScreen>
 {
@@ -65,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen>
     }
     else if(passwordTextEditingController.text.trim().length < 5)
     {
-      cMethods.displaySnackBar("your password must be atleast 6 or more characters.", context);
+      cMethods.displaySnackBar("your password must be at least 6 or more characters.", context);
     }
     else if(vehicleModelTextEditingController.text.trim().isEmpty)
     {
