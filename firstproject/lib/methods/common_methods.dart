@@ -69,28 +69,23 @@ class CommonMethods
   }
 
   ///Directions API
-  static Future<DirectionDetails?> getDirectionDetailsFromAPI(LatLng source, LatLng destination) async
-  {
-    String urlDirectionsAPI = "https://maps.googleapis.com/maps/api/directions/json?destination=${destination.latitude},${destination.longitude}&origin=${source.latitude},${source.longitude}&mode=driving&key=$googleMapKey";
+  static Future<DirectionDetails> getDirectionDetailsFromAPI(LatLng source, LatLng destination) async {
+    String urlAPIDirectionDetail = "https://maps.vietmap.vn/api/route?api-version=1.1&point=${source.latitude},${source.longitude}&point=${destination.latitude},${destination.longitude}&apikey=$vietmapApiKey";
+    var responseFromApiDirectionDetail = await http.get(Uri.parse(urlAPIDirectionDetail));
 
-    var responseFromDirectionsAPI = await sendRequestToAPI(urlDirectionsAPI);
+    DirectionDetails detailModels = DirectionDetails();
 
-    if(responseFromDirectionsAPI == "error")
-    {
-      return null;
+    if (responseFromApiDirectionDetail.statusCode == 200) {
+      var responseData = json.decode(responseFromApiDirectionDetail.body);
+      if (responseData["paths"] != null && responseData["paths"].isNotEmpty) {
+        var path = responseData["paths"][0];
+        detailModels.distanceValueDigits= path["distance"].toInt();
+        detailModels.durationValueDigits = path["time"];
+        detailModels.encodedPoints = path["points"];
+        //detailModels.listLatLngPolylinePoints = listLatLngPolylinePoints;
+      }
     }
-
-    DirectionDetails detailsModel = DirectionDetails();
-
-    detailsModel.distanceTextString = responseFromDirectionsAPI["routes"][0]["legs"][0]["distance"]["text"];
-    detailsModel.distanceValueDigits = responseFromDirectionsAPI["routes"][0]["legs"][0]["distance"]["value"];
-
-    detailsModel.durationTextString = responseFromDirectionsAPI["routes"][0]["legs"][0]["duration"]["text"];
-    detailsModel.durationValueDigits = responseFromDirectionsAPI["routes"][0]["legs"][0]["duration"]["value"];
-
-    detailsModel.encodedPoints = responseFromDirectionsAPI["routes"][0]["overview_polyline"]["points"];
-
-    return detailsModel;
+    return detailModels;
   }
 
   calculateFareAmount(DirectionDetails directionDetails)

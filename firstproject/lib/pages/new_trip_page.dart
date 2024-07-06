@@ -253,8 +253,8 @@ class _NewTripPageState extends State<NewTripPage>
         directionRequested = false;
 
         setState(() {
-          durationText = directionDetailsInfo.durationTextString!;
-          distanceText = directionDetailsInfo.distanceTextString!;
+          durationText = directionDetailsInfo.durationValueDigits.toString()!;
+          distanceText = directionDetailsInfo.distanceValueDigits.toString()!;
         });
       }
     }

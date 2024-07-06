@@ -28,3 +28,4 @@ String driverPhoto = "";
 String carColor = "";
 String carModel = "";
 String carNumber = "";
+String vietmapApiKey = "9f7a0d8e4b1b62942921a791702e132d3a22f4daa5d54b41";
